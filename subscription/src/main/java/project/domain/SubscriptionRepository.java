@@ -2,6 +2,7 @@ package project.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -24,6 +25,4 @@ public interface SubscriptionRepository extends PagingAndSortingRepository<Subsc
     // 사용자 + 도서 조합 조회
     // 중복 구독 방지 또는 상세 정보 조회 시 사용
     Optional<Subscription> findByUserIdAndBookId(Long userId, Long bookId);
-
-
 }

@@ -9,6 +9,9 @@ import project.infra.AbstractEvent;
 //<<< DDD / Domain Event
 @Data
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SubscriptionAdded extends AbstractEvent { // ReadModel 생성을 위해 추가 필드 필요
 
     //private Long id;
@@ -24,12 +27,9 @@ public class SubscriptionAdded extends AbstractEvent { // ReadModel 생성을 �
     private String bookCoverImage;
     private String bookContent;
 
-    public SubscriptionOwned(Subscription aggregate) {
+    public SubscriptionAdded(Subscription aggregate) {
         super(aggregate);
     }
 
-    public SubscriptionOwned() {
-        super();
-    }
 }
 //>>> DDD / Domain Event

@@ -1,13 +1,19 @@
 package project.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.awt.print.Book;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import project.SubscriptionApplication;
 import project.domain.SubscriptionNotOwned;
 import project.domain.SubscriptionOwned;
@@ -29,16 +35,16 @@ public class Subscription {
 
     private Long bookId;
 
-    @PostPersist
-    public void onPostPersist() {
-        SubscriptionOwned subscriptionOwned = new SubscriptionOwned(this);
-        subscriptionOwned.publishAfterCommit();
-
-        SubscriptionNotOwned subscriptionNotOwned = new SubscriptionNotOwned(
-            this
-        );
-        subscriptionNotOwned.publishAfterCommit();
-    }
+//    @PostPersist
+//    public void onPostPersist() {
+//        SubscriptionOwned subscriptionOwned = new SubscriptionOwned(this);
+//        subscriptionOwned.publishAfterCommit();
+//
+//        SubscriptionNotOwned subscriptionNotOwned = new SubscriptionNotOwned(
+//            this
+//        );
+//        subscriptionNotOwned.publishAfterCommit();
+//    }
 
     public static SubscriptionRepository repository() {
         SubscriptionRepository subscriptionRepository = SubscriptionApplication.applicationContext.getBean(
@@ -63,6 +69,8 @@ public class Subscription {
                     .userId(bookViewed.getUserId())
                     .bookId(bookViewed.getBookId())
                     .build();
+            System.out.println("✅ SubscriptionOwned event published!");
+
             ownedEvent.publishAfterCommit(); // 커밋 이후에 발행 명령
 
         } else {
@@ -71,6 +79,8 @@ public class Subscription {
                     .userId(bookViewed.getUserId())
                     .bookId(bookViewed.getBookId())
                     .build();
+            System.out.println("❌ SubscriptionNotOwned event published!");
+
             notOwnedEvent.publishAfterCommit(); // 커밋 이후에 발행 명령
 
         }
@@ -101,11 +111,13 @@ public class Subscription {
         //implement business logic here:
 
         // Example 1:  new item
+        // 신규 구독 저장
         Subscription subscription = Subscription.builder()
                 .userId(pointUpdated.getUserId())
                 .bookId(pointUpdated.getBookId())
                 .build();
         repository().save(subscription);
+
 
         // 구독 추가됨(events) 발행 => read model을 위해서
         SubscriptionAdded addedEvent = SubscriptionAdded.builder()
@@ -113,7 +125,6 @@ public class Subscription {
                 .bookId(pointUpdated.getBookId())
                 .build();
         addedEvent.publishAfterCommit();
-
 
         /** Example 1:  new item 
         Subscription subscription = new Subscription();
@@ -141,6 +152,7 @@ public class Subscription {
         // TODO: membership 도메인과 연동 시 구현
         return false;
     }
+
 
 }
 //>>> DDD / Aggregate Root
