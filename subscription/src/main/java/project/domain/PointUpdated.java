@@ -7,7 +7,7 @@ import project.infra.AbstractEvent;
 
 @Data
 @ToString
-public class PointUpdated extends AbstractEvent {
+public class PointUpdated extends AbstractEvent { // 포인트 업데이트됨 event
 
     private Long id;
 }

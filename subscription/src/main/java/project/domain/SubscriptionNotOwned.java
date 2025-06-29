@@ -11,7 +11,10 @@ import project.infra.AbstractEvent;
 @ToString
 public class SubscriptionNotOwned extends AbstractEvent {
 
-    private Long id;
+    // private Long id;
+    private Long userId;
+    private Integer point;
+    private Long bookId;
 
     public SubscriptionNotOwned(Subscription aggregate) {
         super(aggregate);
