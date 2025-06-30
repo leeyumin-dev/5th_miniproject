@@ -7,7 +7,11 @@ import project.infra.AbstractEvent;
 
 @Data
 @ToString
-public class BookViewed extends AbstractEvent {
+@NoArgsConstructor
+@AllArgsConstructor
+public class BookViewed extends AbstractEvent { // 도서 열람 요청됨 event
 
     private Long id;
+    private Long userId;
+    private Long bookId;
 }

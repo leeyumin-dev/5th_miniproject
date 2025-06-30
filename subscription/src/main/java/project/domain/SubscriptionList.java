@@ -10,9 +10,19 @@ import lombok.Data;
 @Entity
 @Table(name = "SubscriptionList_table")
 @Data
-public class SubscriptionList {
+public class SubscriptionList { //DTO
 
     @Id
-    //@GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+
+    private Long userId;
+    private Long bookId;
+
+    private String bookTitle;
+    private String authorId;
+    private String category;
+    private String bookCoverImage;
+    private String bookSummary;
+    private String bookContent;
 }

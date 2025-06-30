@@ -9,16 +9,22 @@ import project.infra.AbstractEvent;
 //<<< DDD / Domain Event
 @Data
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SubscriptionOwned extends AbstractEvent {
 
-    private Long id;
+    //private Long id;
+    private Long userId;
+    private Integer point;
+    private Long bookId;
 
     public SubscriptionOwned(Subscription aggregate) {
         super(aggregate);
     }
 
-    public SubscriptionOwned() {
-        super();
-    }
+//    public SubscriptionOwned() {
+//        super();
+//    }
 }
 //>>> DDD / Domain Event

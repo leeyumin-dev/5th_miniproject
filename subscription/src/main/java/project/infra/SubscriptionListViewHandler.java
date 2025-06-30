@@ -17,4 +17,32 @@ public class SubscriptionListViewHandler {
     @Autowired
     private SubscriptionListRepository subscriptionListRepository;
     //>>> DDD / CQRS
+
+    @StreamListener(
+            value = KafkaProcessor.INPUT,
+            condition = "headers['type']=='SubscriptionAdded'"
+    )
+    public void wheneverSubsciptionAdded_AddToList(
+        @Payload SubscriptionAdded subscriptionAdded
+    ){
+        try{
+            System.out.println("\n##### [View] SubscriptionAdded Event received:"+subscriptionAdded+"\n");
+
+            // view 객체 생성
+            SubscriptionList subscriptionList = new SubscriptionList();
+            subscriptionList.setUserId(subscriptionAdded.getUserId());
+            subscriptionList.setBookId(subscriptionAdded.getBookId());
+            subscriptionList.setBookTitle(subscriptionAdded.getBookTitle());
+            subscriptionList.setAuthorId(subscriptionAdded.getAuthorId());
+            subscriptionList.setCategory(subscriptionAdded.getCategory());
+            subscriptionList.setBookCoverImage(subscriptionAdded.getBookCoverImage());
+            subscriptionList.setBookSummary(subscriptionAdded.getBookSummary());
+            subscriptionList.setBookContent(subscriptionAdded.getBookContent());
+
+            subscriptionListRepository.save(subscriptionList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
